@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Portofolio PPL - Full Width</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0b0e1a;
+            color: #e8edf5;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e2438;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            border-radius: 10px;
+        }
+
+        /* ===== ANIMATED BACKGROUND PARTICLES (tetap ada di konten utama) ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(11, 14, 26, 0.85);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(108, 92, 231, 0.15);
+            padding: 0 2.5rem;
+            transition: all 0.4s ease;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar.scrolled {
+            background: rgba(11, 14, 26, 0.96);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+        .nav-logo .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+            transition: transform 0.3s ease;
+        }
+        .nav-logo:hover .logo-icon {
+            transform: rotate(-8deg) scale(1.05);
+        }
+        .nav-logo .logo-text {
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+        }
+        .nav-links>li {
+            position: relative;
+        }
+        .nav-links>li>a,
+        .nav-links>li>button {
+            color: #b0b8d1;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .nav-links>li>a:hover,
+        .nav-links>li>button:hover {
+            color: #fff;
+            background: rgba(108, 92, 231, 0.15);
+        }
+        .nav-links>li>a.active,
+        .nav-links>li>button.active {
+            color: #fff;
+            background: rgba(108, 92, 231, 0.25);
+            box-shadow: 0 0 20px rgba(108, 92, 231, 0.08);
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            position: absolute;
+            top: 52px;
+            left: 0;
+            min-width: 260px;
+            background: rgba(20, 24, 44, 0.97);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(108, 92, 231, 0.15);
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px) scale(0.96);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            z-index: 100;
+        }
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(4px) scale(1);
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 24px;
+            color: #c5cbe0;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+        }
+        .dropdown-menu a:hover {
+            background: rgba(108, 92, 231, 0.12);
+            color: #fff;
+            border-left-color: #6c5ce7;
+            padding-left: 30px;
+        }
+        .dropdown-menu a i {
+            width: 20px;
+            margin-right: 10px;
+            color: #6c5ce7;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: #e8edf5;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 72px);
+            background: rgba(11, 14, 26, 0.97);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            padding: 2rem;
+            overflow-y: auto;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .mobile-overlay.open {
+            display: flex;
+        }
+        .mobile-overlay a,
+        .mobile-overlay button {
+            color: #b0b8d1;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            text-align: left;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .mobile-overlay a:hover,
+        .mobile-overlay button:hover {
+            background: rgba(108, 92, 231, 0.12);
+            color: #fff;
+        }
+        .mobile-overlay .mobile-dropdown-content {
+            padding-left: 2.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .mobile-overlay .mobile-dropdown-content.open {
+            display: flex;
+        }
+        .mobile-overlay .mobile-dropdown-content a {
+            font-size: 0.95rem;
+            padding: 12px 24px;
+            font-weight: 400;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            display: none;
+            min-height: 100vh;
+            padding: 100px 3rem 4rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.7s ease forwards;
+        }
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== FULL-WIDTH CONTAINER ===== */
+        .section-container {
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        /* ===== HOME ===== */
+        #home .home-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: calc(100vh - 100px);
+        }
+        #home .home-text h1 {
+            font-size: 3.8rem;
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+        }
+        #home .home-text h1 .highlight {
+            background: linear-gradient(135deg, #6c5ce7, #00b894, #fdcb6e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #home .home-text .subtitle {
+            font-size: 1.4rem;
+            color: #8d98b9;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        #home .home-text .tagline {
+            font-size: 1.1rem;
+            color: #b0b8d1;
+            max-width: 650px;
+            line-height: 1.9;
+            margin-bottom: 2rem;
+        }
+        #home .home-text .identity-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 2rem;
+            margin-bottom: 2.5rem;
+        }
+        #home .home-text .identity-list span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            color: #c5cbe0;
+            background: rgba(108, 92, 231, 0.08);
+            padding: 8px 20px 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(108, 92, 231, 0.08);
+        }
+        #home .home-text .identity-list i {
+            color: #6c5ce7;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 44px;
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.3);
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 45px rgba(108, 92, 231, 0.45);
+        }
+        .btn-secondary {
+            display: inline-block;
+            padding: 16px 44px;
+            background: transparent;
+            color: #e8edf5;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(108, 92, 231, 0.3);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            margin-left: 14px;
+        }
+        .btn-secondary:hover {
+            border-color: #6c5ce7;
+            background: rgba(108, 92, 231, 0.08);
+            transform: translateY(-3px);
+        }
+
+        #home .home-photo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #home .home-photo .photo-frame {
+            width: 480px;
+            height: 480px;
+            border-radius: 50% 30% 50% 30% / 40% 50% 30% 50%;
+            background: linear-gradient(135deg, #6c5ce7, #00b894, #fdcb6e);
+            padding: 6px;
+            box-shadow: 0 30px 80px rgba(108, 92, 231, 0.25);
+            animation: morph 8s ease-in-out infinite;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        @keyframes morph {
+            0%,
+            100% {
+                border-radius: 50% 30% 50% 30% / 40% 50% 30% 50%;
+            }
+            25% {
+                border-radius: 30% 60% 30% 60% / 60% 30% 60% 30%;
+            }
+            50% {
+                border-radius: 60% 30% 60% 30% / 30% 60% 30% 60%;
+            }
+            75% {
+                border-radius: 30% 50% 30% 50% / 50% 30% 50% 30%;
+            }
+        }
+        #home .home-photo .photo-frame .photo-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: #1e2438;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: #6c5ce7;
+            overflow: hidden;
+        }
+        #home .home-photo .photo-frame .photo-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: inherit;
+        }
+        #home .home-photo .photo-frame .photo-inner .placeholder-icon {
+            font-size: 9rem;
+            opacity: 0.4;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.4;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.7;
+            }
+        }
+
+        /* Floating badges on home */
+        .floating-badge {
+            position: absolute;
+            background: rgba(20, 24, 44, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(108, 92, 231, 0.15);
+            border-radius: 16px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            color: #c5cbe0;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            animation: floatBadge 6s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .floating-badge i {
+            color: #6c5ce7;
+            font-size: 1.1rem;
+        }
+        .floating-badge:nth-child(1) {
+            top: 50%;
+            right: -80px;
+            animation-delay: 0s;
+        }
+        .floating-badge:nth-child(2) {
+            bottom: 15%;
+            left: -20px;
+            animation-delay: 2s;
+        }
+        .floating-badge:nth-child(3) {
+            top: 20%;
+            right: -20px;
+            animation-delay: 3s;
+        }
+        @keyframes floatBadge {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        /* ===== SUB-PAGES (ARTEFAK, PORTOFOLIO 1, PORTOFOLIO 2) ===== */
+        .sub-page-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 3rem;
+        }
+        .sub-page-tabs button {
+            padding: 12px 30px;
+            border-radius: 30px;
+            background: rgba(30, 36, 56, 0.6);
+            color: #b0b8d1;
+            border: 1px solid rgba(108, 92, 231, 0.08);
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        .sub-page-tabs button:hover {
+            background: rgba(108, 92, 231, 0.1);
+            color: #fff;
+        }
+        .sub-page-tabs button.active {
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.25);
+        }
+
+        .sub-page-content {
+            display: none;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .sub-page-content.active {
+            display: block;
+        }
+
+        .sub-page-content .card {
+            background: rgba(20, 24, 44, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(108, 92, 231, 0.08);
+            border-radius: 24px;
+            padding: 3rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+        }
+        .sub-page-content .card:hover {
+            border-color: rgba(108, 92, 231, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 60px rgba(0, 0, 0, 0.3);
+        }
+        .sub-page-content .card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sub-page-content .card h4 {
+            font-size: 1.2rem;
+            color: #8d98b9;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+        .sub-page-content .card p {
+            color: #c5cbe0;
+            line-height: 2;
+            font-size: 1.05rem;
+        }
+        .sub-page-content .card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.2rem;
+        }
+        .sub-page-content .card ul li {
+            padding: 10px 0;
+            color: #c5cbe0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(108, 92, 231, 0.05);
+            font-size: 1rem;
+        }
+        .sub-page-content .card ul li:last-child {
+            border-bottom: none;
+        }
+        .sub-page-content .card ul li i {
+            color: #6c5ce7;
+            width: 22px;
+        }
+
+        /* ===== ABOUT ===== */
+        #about .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3.5rem;
+        }
+        #about .about-card {
+            background: rgba(20, 24, 44, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(108, 92, 231, 0.08);
+            border-radius: 24px;
+            padding: 2.8rem;
+            transition: all 0.4s ease;
+        }
+        #about .about-card:hover {
+            border-color: rgba(108, 92, 231, 0.2);
+            transform: translateY(-4px);
+        }
+        #about .about-card h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: #e8edf5;
+        }
+        #about .about-card p {
+            color: #c5cbe0;
+            line-height: 2;
+            font-size: 1.05rem;
+        }
+        #about .skill-tag {
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 30px;
+            background: rgba(108, 92, 231, 0.1);
+            color: #b0b8d1;
+            font-size: 0.9rem;
+            margin: 4px 8px 4px 0;
+            border: 1px solid rgba(108, 92, 231, 0.06);
+            transition: all 0.3s ease;
+        }
+        #about .skill-tag:hover {
+            background: rgba(108, 92, 231, 0.2);
+            color: #fff;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2.5rem;
+            border-top: 1px solid rgba(108, 92, 231, 0.06);
+            color: #4a5270;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            #home .home-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            #home .home-text .tagline {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #home .home-text .identity-list {
+                justify-content: center;
+            }
+            #home .home-photo .photo-frame {
+                width: 380px;
+                height: 380px;
+            }
+            #about .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .section {
+                padding: 100px 2rem 4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .navbar {
+                padding: 0 1.5rem;
+            }
+            .section {
+                padding: 88px 1.2rem 3rem;
+            }
+            #home .home-text h1 {
+                font-size: 2.5rem;
+            }
+            #home .home-text .subtitle {
+                font-size: 1.1rem;
+            }
+            #home .home-text .tagline {
+                font-size: 0.95rem;
+            }
+            #home .home-photo .photo-frame {
+                width: 280px;
+                height: 280px;
+            }
+            #home .home-photo .photo-frame .photo-inner .placeholder-icon {
+                font-size: 5rem;
+            }
+            .sub-page-tabs button {
+                font-size: 0.8rem;
+                padding: 10px 18px;
+            }
+            .sub-page-content .card {
+                padding: 1.5rem;
+            }
+            .floating-badge {
+                display: none;
+            }
+            .nav-logo .logo-text {
+                font-size: 1.1rem;
+            }
+            .nav-logo .logo-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+            .section-container {
+                max-width: 100%;
+                padding: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #home .home-text h1 {
+                font-size: 2rem;
+            }
+            #home .home-photo .photo-frame {
+                width: 220px;
+                height: 220px;
+            }
+            .btn-primary,
+            .btn-secondary {
+                padding: 14px 28px;
+                font-size: 0.9rem;
+                display: block;
+                width: 100%;
+                margin: 6px 0;
+            }
+            .btn-secondary {
+                margin-left: 0;
+            }
+            .section-container {
+                max-width: 100%;
+                padding: 0 0.25rem;
+            }
+            .sub-page-tabs button {
+                font-size: 0.7rem;
+                padding: 8px 12px;
+            }
+            .sub-page-content .card {
+                padding: 1rem;
+            }
+            .sub-page-content .card h3 {
+                font-size: 1.3rem;
+            }
+            .sub-page-content .card ul li {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .text-gradient {
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(20, 24, 44, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(108, 92, 231, 0.06);
+            border-radius: 20px;
+        }
+        .glow-shadow {
+            box-shadow: 0 0 60px rgba(108, 92, 231, 0.06);
+        }
+
+        /* typing cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.1em;
+            background: #6c5ce7;
+            margin-left: 4px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #6c5ce7, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        .section-subtitle {
+            color: #8d98b9;
+            font-weight: 300;
+            font-size: 1.15rem;
+            margin-bottom: 3rem;
+        }
+
+        /* ===== KEUNIKAN JEPARA ===== */
+        .jepara-card {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+        .jepara-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(108, 92, 231, 0.3);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+
+        .jepara-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            background: #1e2438;
+            color: #e8edf5;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid rgba(108, 92, 231, 0.15);
+            z-index: 10;
+        }
+        .jepara-card:hover .jepara-tooltip {
+            opacity: 1;
+        }
+
+        /* ===== MODAL (POP-UP) JEPARA ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-content {
+            max-width: 600px;
+            width: 100%;
+            background: #1e2438;
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(108, 92, 231, 0.15);
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            animation: scaleIn 0.3s ease;
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 1.6rem;
+            color: #b0b8d1;
+            cursor: pointer;
+            transition: 0.3s;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+        .modal-close:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+        .modal-content img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+        .modal-content h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        .modal-content p {
+            color: #c5cbe0;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* ===== LOADING SCREEN (MATAHARI TERBIT + TYPING) ===== */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #0b0e1a;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #loading-overlay.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Latar belakang gradasi langit */
+        .sky-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0b0e1a 0%, #1a1a2e 30%, #2d2d44 50%, #e67e22 70%, #f1c40f 100%);
+            background-size: 100% 400%;
+            animation: sunrise 8s linear infinite alternate;
+            z-index: 1;
+        }
+        @keyframes sunrise {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+
+        /* Matahari */
+        .sun {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #f1c40f, #e67e22);
+            border-radius: 50%;
+            box-shadow: 0 0 80px rgba(241, 196, 15, 0.6), 0 0 150px rgba(241, 196, 15, 0.3);
+            animation: sunRise 8s ease-in-out infinite alternate;
+            z-index: 2;
+        }
+        @keyframes sunRise {
+            0% {
+                bottom: -150px;
+                opacity: 0.3;
+                transform: translateX(-50%) scale(0.8);
+            }
+            100% {
+                bottom: 40%;
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        /* Cahaya matahari (halo) */
+        .sun-rays {
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle at 30% 30%, rgba(241, 196, 15, 0.4), transparent 70%);
+            border-radius: 50%;
+            animation: pulseRays 3s ease-in-out infinite;
+            z-index: 2;
+        }
+        @keyframes pulseRays {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* Awan dekorasi */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            z-index: 3;
+            animation: floatCloud 20s linear infinite alternate;
+        }
+        .cloud-1 {
+            top: 10%;
+            left: 10%;
+            width: 200px;
+            height: 40px;
+            animation-duration: 25s;
+        }
+        .cloud-2 {
+            bottom: 20%;
+            right: 15%;
+            width: 160px;
+            height: 30px;
+            animation-duration: 30s;
+            animation-delay: 5s;
+        }
+        @keyframes floatCloud {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(100px);
+            }
+        }
+
+        /* Konten loading (teks di atas matahari) */
+        .loading-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .typing-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+            min-height: 3rem;
+            display: inline-block;
+        }
+        .typing-cursor-loading {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background: #6c5ce7;
+            margin-left: 4px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        .loading-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+            letter-spacing: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .typing-text {
+                font-size: 1.2rem;
+            }
+            .loading-subtitle {
+                font-size: 0.8rem;
+            }
+            .sun {
+                width: 60px;
+                height: 60px;
+            }
+            .sun-rays {
+                width: 100px;
+                height: 100px;
+                top: -20px;
+                left: -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOADING SCREEN (MATAHARI TERBIT + TYPING) ===== -->
+    <div id="loading-overlay">
+        <div class="sky-gradient"></div>
+        <div class="sun">
+            <div class="sun-rays"></div>
+        </div>
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="loading-content">
+            <div>
+                <span class="typing-text" id="typingText"></span><span class="typing-cursor-loading"></span>
+            </div>
+            <div class="loading-subtitle">— E-Portofolio —</div>
+        </div>
+    </div>
+
+    <!-- ===== PARTICLES CANVAS ===== -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo" onclick="showSection('home')">
+            <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+            <span class="logo-text">E-Portofolio</span>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+            <li><button class="active" data-section="home" onclick="showSection('home')"><i class="fas fa-home"></i> Home</button></li>
+            <li class="dropdown-parent">
+                <button data-section="artefak" onclick="toggleDropdown(this)"><i class="fas fa-folder-open"></i> Artefak <i class="fas fa-chevron-down text-[10px] ml-1 opacity-60"></i></button>
+                <div class="dropdown-menu" id="dropdown-artefak">
+                    <a href="#" onclick="showSubPage('artefak','rpp')"><i class="fas fa-file-alt"></i> RPP</a>
+                    <a href="#" onclick="showSubPage('artefak','media')"><i class="fas fa-chalkboard-teacher"></i> Media Pembelajaran</a>
+                    <a href="#" onclick="showSubPage('artefak','hasil')"><i class="fas fa-star"></i> Hasil Kerja Siswa</a>
+                    <a href="#" onclick="showSubPage('artefak','penilaian')"><i class="fas fa-clipboard-check"></i> Penilaian GP & DPL</a>
+                    <a href="#" onclick="showSubPage('artefak','video')"><i class="fas fa-video"></i> Video Pembelajaran</a>
+                </div>
+            </li>
+            <li class="dropdown-parent">
+                <button data-section="portofolio1" onclick="toggleDropdown(this)"><i class="fas fa-book"></i> Portofolio 1 <i class="fas fa-chevron-down text-[10px] ml-1 opacity-60"></i></button>
+                <div class="dropdown-menu" id="dropdown-portofolio1">
+                    <a href="#" onclick="showSubPage('portofolio1','profil')"><i class="fas fa-user-graduate"></i> Profil Mahasiswa</a>
+                    <a href="#" onclick="showSubPage('portofolio1','analisis')"><i class="fas fa-search-plus"></i> Analisis Artefak</a>
+                    <a href="#" onclick="showSubPage('portofolio1','lampiran')"><i class="fas fa-paperclip"></i> Lampiran Penilaian</a>
+                    <a href="#" onclick="showSubPage('portofolio1','model')"><i class="fas fa-chalkboard"></i> Model Guru yang Dituju</a>
+                </div>
+            </li>
+            <li class="dropdown-parent">
+                <button data-section="portofolio2" onclick="toggleDropdown(this)"><i class="fas fa-layer-group"></i> Portofolio 2 <i class="fas fa-chevron-down text-[10px] ml-1 opacity-60"></i></button>
+                <div class="dropdown-menu" id="dropdown-portofolio2">
+                    <a href="#" onclick="showSubPage('portofolio2','refleksi')"><i class="fas fa-feather-alt"></i> Refleksi Akhir PPL</a>
+                    <a href="#" onclick="showSubPage('portofolio2','filosofi')"><i class="fas fa-brain"></i> Filosofi Mengajar</a>
+                </div>
+            </li>
+            <li><button data-section="about" onclick="showSection('about')"><i class="fas fa-user-circle"></i> About</button></li>
+        </ul>
+
+        <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ===== MOBILE OVERLAY ===== -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <button onclick="showSection('home');closeMobileMenu()"><i class="fas fa-home"></i> Home</button>
+        <button onclick="toggleMobileDropdown('mobile-artefak')"><i class="fas fa-folder-open"></i> Artefak <i class="fas fa-chevron-down ml-auto text-xs opacity-60"></i></button>
+        <div class="mobile-dropdown-content" id="mobile-artefak">
+            <a href="#" onclick="showSubPage('artefak','rpp');closeMobileMenu()">📄 RPP</a>
+            <a href="#" onclick="showSubPage('artefak','media');closeMobileMenu()">📺 Media Pembelajaran</a>
+            <a href="#" onclick="showSubPage('artefak','hasil');closeMobileMenu()">⭐ Hasil Kerja Siswa</a>
+            <a href="#" onclick="showSubPage('artefak','penilaian');closeMobileMenu()">📋 Penilaian GP & DPL</a>
+            <a href="#" onclick="showSubPage('artefak','video');closeMobileMenu()">🎬 Video Pembelajaran</a>
+        </div>
+        <button onclick="toggleMobileDropdown('mobile-portofolio1')"><i class="fas fa-book"></i> Portofolio 1 <i class="fas fa-chevron-down ml-auto text-xs opacity-60"></i></button>
+        <div class="mobile-dropdown-content" id="mobile-portofolio1">
+            <a href="#" onclick="showSubPage('portofolio1','profil');closeMobileMenu()">👨‍🎓 Profil Mahasiswa</a>
+            <a href="#" onclick="showSubPage('portofolio1','analisis');closeMobileMenu()">🔍 Analisis Artefak</a>
+            <a href="#" onclick="showSubPage('portofolio1','lampiran');closeMobileMenu()">📎 Lampiran Penilaian</a>
+            <a href="#" onclick="showSubPage('portofolio1','model');closeMobileMenu()">📋 Model Guru yang Dituju</a>
+        </div>
+        <button onclick="toggleMobileDropdown('mobile-portofolio2')"><i class="fas fa-layer-group"></i> Portofolio 2 <i class="fas fa-chevron-down ml-auto text-xs opacity-60"></i></button>
+        <div class="mobile-dropdown-content" id="mobile-portofolio2">
+            <a href="#" onclick="showSubPage('portofolio2','refleksi');closeMobileMenu()">🪶 Refleksi Akhir PPL</a>
+            <a href="#" onclick="showSubPage('portofolio2','filosofi');closeMobileMenu()">🧠 Filosofi Mengajar</a>
+        </div>
+        <button onclick="showSection('about');closeMobileMenu()"><i class="fas fa-user-circle"></i> About</button>
+    </div>
+
+    <!-- ===== MODAL (POP-UP) JEPARA ===== -->
+    <div id="jeparaModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <img id="modalImage" src="" alt="Keunikan Jepara">
+            <h2 id="modalTitle"></h2>
+            <p id="modalDesc"></p>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+
+    <!-- ===== HOME ===== -->
+    <section class="section active" id="home">
+        <div class="section-container home-grid">
+            <div class="home-text">
+                <div class="flex items-center gap-2 text-sm text-[#6c5ce7] font-medium mb-2">
+                    <i class="fas fa-sparkles"></i> Selamat Datang di E-Portofolio Saya
+                </div>
+                <h1>
+                    Halo, Saya <br />
+                    <span class="highlight" id="typed-name">Muhammad Ridho Sani</span>
+                    <span class="typing-cursor"></span>
+                </h1>
+                <p class="subtitle">Mahasiswa PPL | Calon Guru Profesional</p>
+                <p class="tagline">
+                    Selamat datang di portofolio digital saya. Saya adalah mahasiswa PPL yang bersemangat
+                    dalam mengembangkan kompetensi mengajar melalui praktik langsung, refleksi, dan
+                    inovasi pembelajaran.
+                </p>
+                <!-- KEUNIKAN JEPARA SUDAH DIPINDAHKAN KE PORTOFOLIO 1 -->
+                <div class="identity-list">
+                    <span><i class="fas fa-university"></i> Universitas Negeri Yogyakarta</span>
+                    <span><i class="fas fa-calendar-alt"></i> PPG Prajabatan 2025</span>
+                    <span><i class="fas fa-map-pin"></i> Yogyakarta, Indonesia</span>
+                    <span><i class="fas fa-envelope"></i> muhammad5614dppk.2025@student.uny.ac.id</span>
+                    <span><i class="fas fa-envelope"></i> PPL SMK Negeri 5 Yogyakarta</span>
+                </div>
+                <div>
+                    <button class="btn-primary" onclick="showSection('portofolio1')">
+                        <i class="fas fa-rocket mr-2"></i> Jelajahi Portofolio
+                    </button>
+                    <button class="btn-secondary" onclick="showSection('about')">
+                        <i class="fas fa-info-circle mr-2"></i> Tentang Saya
+                    </button>
+                </div>
+            </div>
+
+            <div class="home-photo relative">
+                <div class="photo-frame">
+                    <div class="photo-inner">
+                        <img src="fotoprofil.jpeg" alt="Foto" />
+                    </div>
+                </div>
+                <div class="floating-badge"><i class="fas fa-star"></i> PPL Terbaik</div>
+                <div class="floating-badge"><i class="fas fa-heart"></i> Semangat Mengajar</div>
+                <div class="floating-badge"><i class="fas fa-star"></i> PPL SMK Negeri 5 Yogyakarta</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ARTEFAK ===== -->
+    <section class="section" id="artefak">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fas fa-folder-open mr-3 text-3xl"></i>Artefak</h2>
+            <p class="section-subtitle">Kumpulan artefak pembelajaran selama PPL</p>
+
+            <div class="sub-page-tabs" id="artefak-tabs">
+                <button class="active" data-sub="rpp" onclick="showSubPage('artefak','rpp')">📄 RPP</button>
+                <button data-sub="media" onclick="showSubPage('artefak','media')">📺 Media Pembelajaran</button>
+                <button data-sub="hasil" onclick="showSubPage('artefak','hasil')">⭐ Hasil Kerja Siswa</button>
+                <button data-sub="penilaian" onclick="showSubPage('artefak','penilaian')">📋 Penilaian GP & DPL</button>
+                <button data-sub="video" onclick="showSubPage('artefak','video')">🎬 Video Pembelajaran</button>
+            </div>
+
+            <div class="sub-page-content active" id="artefak-rpp">
+                <div class="card">
+                    <h3><i class="fas fa-file-alt mr-3 text-[#6c5ce7]"></i>Rencana Pelaksanaan Pembelajaran</h3>
+                    <h4>Kelas X - Matematika (Fungsi Komposisi)</h4>
+                    <p>
+                        RPP ini disusun berdasarkan Kurikulum Merdeka dengan pendekatan pembelajaran
+                        berbasis masalah (PBL). Memuat tujuan pembelajaran, langkah-langkah kegiatan,
+                        asesmen formatif dan sumatif, serta refleksi pembelajaran.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Kompetensi Dasar: 3.4 & 4.4</li>
+                        <li><i class="fas fa-check-circle"></i> Alokasi Waktu: 2 x 45 menit</li>
+                        <li><i class="fas fa-check-circle"></i> Model: Problem Based Learning</li>
+                        <li><i class="fas fa-check-circle"></i> Asesmen: Tes tertulis & observasi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sub-page-content" id="artefak-media">
+                <div class="card">
+                    <h3><i class="fas fa-chalkboard-teacher mr-3 text-[#6c5ce7]"></i>Media Pembelajaran</h3>
+                    <h4>PowerPoint Interaktif & Video Animasi</h4>
+                    <p>
+                        Media pembelajaran yang dikembangkan meliputi presentasi interaktif
+                        menggunakan PowerPoint dengan animasi, video penjelasan konsep, dan
+                        lembar kerja digital berbasis Google Forms.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> PPT Interaktif (30 slide)</li>
+                        <li><i class="fas fa-check-circle"></i> Video Animasi Konsep (5 menit)</li>
+                        <li><i class="fas fa-check-circle"></i> LKPD Digital (Google Forms)</li>
+                        <li><i class="fas fa-check-circle"></i> Quizizz untuk evaluasi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sub-page-content" id="artefak-hasil">
+                <div class="card">
+                    <h3><i class="fas fa-star mr-3 text-[#6c5ce7]"></i>Hasil Kerja Siswa</h3>
+                    <h4>Portofolio Tugas & Projek Siswa</h4>
+                    <p>
+                        Kumpulan hasil kerja siswa selama proses pembelajaran, termasuk
+                        tugas individu, tugas kelompok, dan projek akhir materi.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Tugas individu: 15 siswa tuntas</li>
+                        <li><i class="fas fa-check-circle"></i> Tugas kelompok: 5 kelompok</li>
+                        <li><i class="fas fa-check-circle"></i> Projek akhir: Video presentasi</li>
+                        <li><i class="fas fa-check-circle"></i> Nilai rata-rata: 85,6</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sub-page-content" id="artefak-penilaian">
+                <div class="card">
+                    <h3><i class="fas fa-clipboard-check mr-3 text-[#6c5ce7]"></i>Penilaian GP & DPL</h3>
+                    <h4>Lembar Penilaian Observasi & Supervisi</h4>
+                    <p>
+                        Hasil penilaian dari Guru Pamong (GP) dan Dosen Pembimbing Lapangan (DPL)
+                        meliputi observasi pembelajaran, supervisi, dan umpan balik.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Observasi GP: 92/100</li>
+                        <li><i class="fas fa-check-circle"></i> Supervisi DPL: 88/100</li>
+                        <li><i class="fas fa-check-circle"></i> Umpan balik: 10 butir saran</li>
+                        <li><i class="fas fa-check-circle"></i> Rekomendasi: Baik Sekali</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sub-page-content" id="artefak-video">
+                <div class="card">
+                    <h3><i class="fas fa-video mr-3 text-[#6c5ce7]"></i>Video Pembelajaran</h3>
+                    <h4>Rekaman Praktik Mengajar di Kelas</h4>
+                    <p>
+                        Video dokumentasi praktik mengajar di kelas X dengan materi
+                        Fungsi Komposisi. Menampilkan kegiatan pembuka, inti, dan penutup
+                        serta interaksi dengan siswa.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Durasi: 45 menit</li>
+                        <li><i class="fas fa-check-circle"></i> Format: MP4</li>
+                        <li><i class="fas fa-check-circle"></i> Kualitas: 1080p</li>
+                        <li><i class="fas fa-check-circle"></i> Tersedia di Google Drive</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PORTOFOLIO 1 ===== -->
+    <section class="section" id="portofolio1">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fas fa-book mr-3 text-3xl"></i>Portofolio 1</h2>
+            <p class="section-subtitle">Profil mahasiswa, analisis artefak, dan model guru yang dituju</p>
+
+            <div class="sub-page-tabs" id="portofolio1-tabs">
+                <button class="active" data-sub="profil" onclick="showSubPage('portofolio1','profil')">👨‍🎓 Profil Mahasiswa</button>
+                <button data-sub="analisis" onclick="showSubPage('portofolio1','analisis')">🔍 Analisis Artefak</button>
+                <button data-sub="lampiran" onclick="showSubPage('portofolio1','lampiran')">📎 Lampiran Penilaian</button>
+                <button data-sub="model" onclick="showSubPage('portofolio1','model')">📋 Model Guru</button>
+            </div>
+
+            <!-- Profil (dengan KEUNIKAN JEPARA) -->
+            <div class="sub-page-content active" id="portofolio1-profil">
+                <div class="card">
+                    <h3><i class="fas fa-user-graduate mr-3 text-[#6c5ce7]"></i>Profil Mahasiswa</h3>
+                    <h4>Identitas & Latar Belakang</h4>
+                    <p>
+                        Mahasiswa Program Studi Pendidikan Matematika, Fakultas Keguruan dan Ilmu Pendidikan,
+                        Universitas Pendidikan Indonesia. Memiliki minat dalam pengembangan media pembelajaran
+                        digital dan evaluasi pembelajaran.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> NIM: 2101234</li>
+                        <li><i class="fas fa-check-circle"></i> Program Studi: Pendidikan Matematika</li>
+                        <li><i class="fas fa-check-circle"></i> Semester: 6</li>
+                        <li><i class="fas fa-check-circle"></i> IPK: 3.78</li>
+                        <li><i class="fas fa-check-circle"></i> PPL: SMP Negeri 1 Bandung</li>
+                    </ul>
+                    
+                    <!-- ===== KEUNIKAN JEPARA SECTION (DIPINDAHKAN KE SINI) ===== -->
+                    <div class="mt-6 overflow-x-auto scrollbar-hide pb-2">
+                        <div class="flex flex-nowrap gap-3 md:gap-4 w-max">
+                            <!-- 1. Kota Ukir -->
+                            <div class="relative group flex-shrink-0 w-36 md:w-48 bg-[#1e2438] rounded-xl overflow-hidden border border-[rgba(108,92,231,0.08)] jepara-card" onclick="openModal('Kota Ukir', 'Kabupaten Jepara dikenal luas sebagai Kota Ukir, sebuah identitas yang melekat kuat dalam kehidupan masyarakatnya. Seni ukir kayu di Jepara bukan sekadar kerajinan, melainkan warisan budaya yang telah berkembang sejak ratusan tahun lalu dan terus dilestarikan secara turun-temurun. Setiap goresan ukiran mencerminkan ketelitian, kesabaran, serta nilai estetika tinggi yang menjadi ciri khas pengrajin Jepara. Keunikan ukiran Jepara terletak pada motifnya yang beragam, seperti bentuk flora, fauna, hingga ornamen klasik yang sarat makna filosofis. Tidak hanya digunakan sebagai hiasan, ukiran ini juga diaplikasikan pada berbagai produk mebel yang memiliki kualitas tinggi dan telah menembus pasar internasional. Hal ini menjadikan Jepara sebagai salah satu pusat industri mebel dan kerajinan kayu terbesar di Indonesia. Lebih dari sekadar produk ekonomi, seni ukir Jepara merupakan simbol identitas daerah dan kebanggaan masyarakatnya. Dengan memadukan nilai tradisi dan inovasi, Jepara terus mempertahankan reputasinya sebagai kota ukir yang tidak hanya dikenal di tingkat nasional, tetapi juga di dunia internasional.', 'https://media.istockphoto.com/id/2230392530/id/foto/pintu-kayu-berornamen-dengan-ukiran-rumit-dan-detail-arsitektur.jpg?s=612x612&w=is&k=20&c=z8K7oLF3zJ49UNhmL1YL1HAs8RP2esrpp7pQgY0PzNo=')">
+                                <div class="jepara-tooltip">Keahlian ukir kayu Jepara yang mendunia</div>
+                                <img src="https://media.istockphoto.com/id/2230392530/id/foto/pintu-kayu-berornamen-dengan-ukiran-rumit-dan-detail-arsitektur.jpg?s=612x612&w=is&k=20&c=z8K7oLF3zJ49UNhmL1YL1HAs8RP2esrpp7pQgY0PzNo=" class="w-full h-20 md:h-24 object-cover" alt="Kota Ukir Jepara">
+                                <div class="p-2 md:p-3">
+                                    <h4 class="text-xs md:text-sm font-bold text-white">Kota Ukir</h4>
+                                </div>
+                            </div>
+
+                            <!-- 2. Bumi Kartini -->
+                            <div class="relative group flex-shrink-0 w-36 md:w-48 bg-[#1e2438] rounded-xl overflow-hidden border border-[rgba(108,92,231,0.08)] jepara-card" onclick="openModal('Bumi Kartini', 'Kabupaten Jepara dikenal sebagai Bumi Kartini, sebuah julukan yang lahir dari sejarah penting tempat kelahiran Raden Ajeng Kartini. Dari tanah inilah muncul sosok perempuan visioner yang memperjuangkan emansipasi wanita dan hak pendidikan bagi kaum perempuan di Indonesia. Pemikiran-pemikirannya yang tertuang dalam surat-suratnya menjadi inspirasi besar dalam perubahan sosial, khususnya dalam membuka akses pendidikan yang lebih luas dan setara. Sebagai Bumi Kartini, Jepara tidak hanya menyimpan jejak sejarah, tetapi juga mewariskan nilai-nilai perjuangan, keberanian, dan semangat untuk terus maju. Semangat tersebut masih terasa hingga kini dalam kehidupan masyarakat, terutama dalam pentingnya pendidikan dan peran perempuan dalam berbagai bidang. Dengan identitas ini, Jepara menjadi simbol bahwa dari sebuah daerah kecil dapat lahir gagasan besar yang membawa perubahan bagi bangsa. Nilai-nilai yang diwariskan Kartini menjadikan Jepara bukan sekadar tempat bersejarah, tetapi juga sumber inspirasi bagi generasi muda untuk terus belajar, berkembang, dan berkontribusi bagi masa depan.', 'https://kompaspedia.kompas.id/wp-content/uploads/2021/04/PATUNG-KARTINI1-08-scaled.jpg')">
+                                <div class="jepara-tooltip">Lahirnya pahlawan emansipasi wanita</div>
+                                <img src="https://kompaspedia.kompas.id/wp-content/uploads/2021/04/PATUNG-KARTINI1-08-scaled.jpg" class="w-full h-20 md:h-24 object-cover" alt="Bumi Kartini Jepara">
+                                <div class="p-2 md:p-3">
+                                    <h4 class="text-xs md:text-sm font-bold text-white">Bumi Kartini</h4>
+                                </div>
+                            </div>
+
+                            <!-- 3. Karimunjawa -->
+                            <div class="relative group flex-shrink-0 w-36 md:w-48 bg-[#1e2438] rounded-xl overflow-hidden border border-[rgba(108,92,231,0.08)] jepara-card" onclick="openModal('Karimunjawa', 'Kabupaten Jepara tidak hanya dikenal karena kekayaan budayanya, tetapi juga memiliki pesona alam yang luar biasa melalui Kepulauan Karimunjawa. Gugusan pulau yang terletak di Laut Jawa ini menjadi salah satu destinasi wisata unggulan yang menawarkan keindahan laut tropis dengan air yang jernih, pasir putih, serta ekosistem bawah laut yang masih alami. Karimunjawa sering dijuluki sebagai "surga tersembunyi" karena keindahan terumbu karangnya yang memikat serta keanekaragaman hayati laut yang sangat kaya. Aktivitas seperti snorkeling, diving, hingga menjelajahi pulau-pulau kecil menjadi daya tarik utama bagi wisatawan, baik dari dalam maupun luar negeri. Suasana yang tenang dan jauh dari hiruk pikuk perkotaan menjadikan Karimunjawa tempat yang ideal untuk beristirahat sekaligus menikmati keindahan alam. Keberadaan Karimunjawa semakin memperkuat identitas Jepara sebagai daerah yang tidak hanya unggul dalam budaya, tetapi juga memiliki potensi wisata alam yang mendunia. Perpaduan antara kekayaan budaya dan keindahan bahari menjadikan Jepara sebagai destinasi yang lengkap dan penuh daya tarik.', 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=300&h=200&fit=crop')">
+                                <div class="jepara-tooltip">Surga tropis dengan pasir putih & terumbu karang</div>
+                                <img src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=300&h=200&fit=crop" class="w-full h-20 md:h-24 object-cover" alt="Karimunjawa Jepara">
+                                <div class="p-2 md:p-3">
+                                    <h4 class="text-xs md:text-sm font-bold text-white">Karimunjawa</h4>
+                                </div>
+                            </div>
+
+                            <!-- 4. Perang Obor -->
+                            <div class="relative group flex-shrink-0 w-36 md:w-48 bg-[#1e2438] rounded-xl overflow-hidden border border-[rgba(108,92,231,0.08)] jepara-card" onclick="openModal('Perang Obor', 'Kabupaten Jepara memiliki tradisi budaya yang unik dan sarat makna, salah satunya adalah Perang Obor. Tradisi ini dilaksanakan oleh masyarakat di Desa Tegalsambi sebagai bagian dari ritual tolak bala yang telah diwariskan secara turun-temurun. Perang Obor bukan sekadar pertunjukan, melainkan simbol harapan agar masyarakat dijauhkan dari bencana, penyakit, dan kesulitan hidup. Dalam pelaksanaannya, para peserta saling berhadapan sambil membawa obor yang menyala, kemudian "bertarung" dengan penuh semangat di tengah sorak-sorai warga. Meskipun terlihat seperti pertempuran, tradisi ini dilakukan dengan aturan dan nilai kebersamaan yang kuat, sehingga tetap menjaga keselamatan dan keharmonisan antarwarga. Lebih dari itu, Perang Obor mencerminkan nilai keberanian, solidaritas, dan kearifan lokal masyarakat Jepara. Tradisi ini juga menjadi daya tarik budaya yang memperkaya identitas daerah serta menarik perhatian wisatawan untuk mengenal lebih dalam kekayaan budaya Jepara. Dengan terus dilestarikan, Perang Obor menjadi bukti bahwa budaya lokal mampu bertahan dan tetap relevan di tengah perkembangan zaman.', 'https://img.antarafoto.com/cache/1200x799/2025/06/09/tradisi-perang-obor-di-jepara-1ilhl-dom.jpg')">
+                                <div class="jepara-tooltip">Tradisi unik adu obor api di malam hari</div>
+                                <img src="https://img.antarafoto.com/cache/1200x799/2025/06/09/tradisi-perang-obor-di-jepara-1ilhl-dom.jpg" class="w-full h-20 md:h-24 object-cover" alt="Perang Obor Jepara">
+                                <div class="p-2 md:p-3">
+                                    <h4 class="text-xs md:text-sm font-bold text-white">Perang Obor</h4>
+                                </div>
+                            </div>
+
+                            <!-- 5. Mebel Jepara -->
+                            <div class="relative group flex-shrink-0 w-36 md:w-48 bg-[#1e2438] rounded-xl overflow-hidden border border-[rgba(108,92,231,0.08)] jepara-card" onclick="openModal('Mebel Jepara', 'Kabupaten Jepara dikenal sebagai pusat industri mebel yang memiliki reputasi hingga tingkat internasional. Keahlian masyarakat dalam mengolah kayu menjadi produk bernilai tinggi telah berkembang sejak lama dan menjadi bagian penting dari identitas daerah. Mebel Jepara tidak hanya dikenal karena keindahannya, tetapi juga karena kualitas, ketahanan, serta detail pengerjaan yang sangat teliti. Setiap produk mebel Jepara merupakan perpaduan antara seni dan fungsi. Para pengrajin tidak sekadar membuat furnitur, tetapi juga menghadirkan nilai estetika melalui ukiran khas yang sarat makna. Proses pembuatannya pun masih banyak yang dilakukan secara manual, sehingga menghasilkan karya yang unik dan memiliki karakter tersendiri di setiap produknya. Keunggulan inilah yang membuat mebel Jepara mampu menembus pasar ekspor ke berbagai negara. Industri ini menjadi salah satu penggerak utama perekonomian daerah serta membuka lapangan pekerjaan bagi masyarakat. Dengan terus berinovasi tanpa meninggalkan nilai tradisi, mebel Jepara tetap eksis dan menjadi simbol kebanggaan yang mengangkat nama Jepara di kancah dunia.', 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=300&h=200&fit=crop')">
+                                <div class="jepara-tooltip">Furniture kayu berkualitas ekspor dunia</div>
+                                <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=300&h=200&fit=crop" class="w-full h-20 md:h-24 object-cover" alt="Mebel Jepara">
+                                <div class="p-2 md:p-3">
+                                    <h4 class="text-xs md:text-sm font-bold text-white">Mebel Jepara</h4>
+                                </div>
+                            </div>
+
+                            <!-- 6. Ratu Kalinyamat -->
+                            <div class="relative group flex-shrink-0 w-36 md:w-48 bg-[#1e2438] rounded-xl overflow-hidden border border-[rgba(108,92,231,0.08)] jepara-card" onclick="openModal('Ratu Kalinyamat', 'Ratu Kalinyamat merupakan salah satu tokoh perempuan berpengaruh dalam sejarah Kabupaten Jepara yang dikenal karena keberanian dan kepemimpinannya. Ia memerintah Jepara pada abad ke-16 dan berhasil menjadikan wilayah ini sebagai kekuatan maritim yang disegani di Nusantara. Sosoknya tidak hanya dihormati sebagai pemimpin, tetapi juga sebagai simbol keteguhan dan semangat juang. Di bawah kepemimpinannya, Jepara aktif melakukan perlawanan terhadap kekuatan kolonial Portugis, termasuk mengirim armada laut untuk menyerang Malaka. Keberanian Ratu Kalinyamat dalam menghadapi penjajah menunjukkan bahwa perempuan juga memiliki peran penting dalam perjuangan dan kepemimpinan pada masa itu. Lebih dari sekadar tokoh sejarah, Ratu Kalinyamat menjadi inspirasi bagi generasi masa kini, khususnya dalam hal keberanian, ketegasan, dan dedikasi terhadap daerah. Kisah perjuangannya memperkuat identitas Jepara sebagai daerah yang tidak hanya kaya budaya, tetapi juga memiliki warisan sejarah kepemimpinan yang kuat dan membanggakan.', 'https://static.promediateknologi.id/crop/0x44:1080x700/1200x800/webp/photo/p1/294/2023/11/22/401439758_1746181379215445_4453715809497768214_n-690737532.jpg')">
+                                <div class="jepara-tooltip">Tokoh wanita legendaris yang memimpin Jepara</div>
+                                <img src="https://static.promediateknologi.id/crop/0x44:1080x700/1200x800/webp/photo/p1/294/2023/11/22/401439758_1746181379215445_4453715809497768214_n-690737532.jpg" class="w-full h-20 md:h-24 object-cover" alt="Ratu Kalinyamat">
+                                <div class="p-2 md:p-3">
+                                    <h4 class="text-xs md:text-sm font-bold text-white">Ratu Kalinyamat</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ===== END KEUNIKAN JEPARA ===== -->
+                </div>
+            </div>
+
+            <!-- Analisis -->
+            <div class="sub-page-content" id="portofolio1-analisis">
+                <div class="card">
+                    <h3><i class="fas fa-search-plus mr-3 text-[#6c5ce7]"></i>Analisis Artefak Produk & Perangkat</h3>
+                    <h4>Refleksi terhadap Perangkat Pembelajaran</h4>
+                    <p>
+                        Analisis mendalam terhadap perangkat pembelajaran yang telah disusun,
+                        meliputi RPP, media, dan instrumen penilaian. Mengidentifikasi kekuatan,
+                        kelemahan, dan peluang perbaikan.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Kekuatan: Sistematis & kontekstual</li>
+                        <li><i class="fas fa-check-circle"></i> Kelemahan: Alokasi waktu kurang</li>
+                        <li><i class="fas fa-check-circle"></i> Peluang: Integrasi teknologi</li>
+                        <li><i class="fas fa-check-circle"></i> Rekomendasi: Tambahan kuis interaktif</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Lampiran -->
+            <div class="sub-page-content" id="portofolio1-lampiran">
+                <div class="card">
+                    <h3><i class="fas fa-paperclip mr-3 text-[#6c5ce7]"></i>Lampiran Penilaian</h3>
+                    <h4>Observasi & Jurnal Mingguan</h4>
+                    <p>
+                        Kumpulan lembar observasi pembelajaran dan jurnal mingguan selama
+                        pelaksanaan PPL. Berisi catatan refleksi harian dan masukan dari guru pamong.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Lembar observasi: 8 pertemuan</li>
+                        <li><i class="fas fa-check-circle"></i> Jurnal mingguan: 16 entri</li>
+                        <li><i class="fas fa-check-circle"></i> Catatan refleksi: 12 butir</li>
+                        <li><i class="fas fa-check-circle"></i> Masukan GP: 10 saran perbaikan</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Model Guru -->
+            <div class="sub-page-content" id="portofolio1-model">
+                <div class="card">
+                    <h3><i class="fas fa-chalkboard mr-3 text-[#6c5ce7]"></i>Model Guru yang Dituju</h3>
+                    <h4>Guru yang Inspiratif & Profesional</h4>
+                    <p>
+                        Model guru yang menjadi inspirasi dan tujuan dalam pengembangan
+                        kompetensi mengajar, dengan karakteristik pedagogis, kepribadian,
+                        dan profesionalisme yang tinggi.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Kompetensi pedagogis: Mumpuni</li>
+                        <li><i class="fas fa-check-circle"></i> Kompetensi kepribadian: Teladan</li>
+                        <li><i class="fas fa-check-circle"></i> Kompetensi sosial: Komunikatif</li>
+                        <li><i class="fas fa-check-circle"></i> Kompetensi profesional: Terampil</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PORTOFOLIO 2 ===== -->
+    <section class="section" id="portofolio2">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fas fa-layer-group mr-3 text-3xl"></i>Portofolio 2</h2>
+            <p class="section-subtitle">Refleksi akhir PPL terbimbing & filosofi mengajar</p>
+
+            <div class="sub-page-tabs" id="portofolio2-tabs">
+                <button class="active" data-sub="refleksi" onclick="showSubPage('portofolio2','refleksi')">🪶 Refleksi Akhir PPL</button>
+                <button data-sub="filosofi" onclick="showSubPage('portofolio2','filosofi')">🧠 Filosofi Mengajar</button>
+            </div>
+
+            <div class="sub-page-content active" id="portofolio2-refleksi">
+                <div class="card">
+                    <h3><i class="fas fa-feather-alt mr-3 text-[#6c5ce7]"></i>Refleksi Akhir PPL Terbimbing</h3>
+                    <h4>Kesimpulan & Pembelajaran Selama PPL</h4>
+                    <p>
+                        Refleksi menyeluruh terhadap pengalaman PPL terbimbing, mencakup
+                        capaian kompetensi, kendala yang dihadapi, dan rencana pengembangan
+                        ke depan sebagai calon guru profesional.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Capaian: 4 kompetensi meningkat</li>
+                        <li><i class="fas fa-check-circle"></i> Kendala: Manajemen waktu kelas</li>
+                        <li><i class="fas fa-check-circle"></i> Solusi: Teknik ice breaking</li>
+                        <li><i class="fas fa-check-circle"></i> Rencana: Lanjut PPG & sertifikasi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sub-page-content" id="portofolio2-filosofi">
+                <div class="card">
+                    <h3><i class="fas fa-brain mr-3 text-[#6c5ce7]"></i>Filosofi Mengajar</h3>
+                    <h4>Pandangan & Prinsip Mengajar Saya</h4>
+                    <p>
+                        "Setiap anak adalah bintang dengan caranya sendiri. Tugas guru adalah
+                        menyediakan panggung, cahaya, dan kesempatan untuk bersinar."
+                        — Filosofi mengajar yang berpusat pada siswa, inklusif, dan transformatif.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Prinsip: Student-centered</li>
+                        <li><i class="fas fa-check-circle"></i> Nilai: Inklusivitas & empati</li>
+                        <li><i class="fas fa-check-circle"></i> Pendekatan: Konstruktivisme</li>
+                        <li><i class="fas fa-check-circle"></i> Tujuan: Pembelajaran bermakna</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="section" id="about">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fas fa-user-circle mr-3 text-3xl"></i>Tentang Saya</h2>
+            <p class="section-subtitle">Lebih dekat dengan perjalanan saya sebagai calon guru</p>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3><i class="fas fa-quote-left mr-2 text-[#6c5ce7]"></i> Siapa Saya?</h3>
+                    <p>
+                        Saya adalah mahasiswa Pendidikan Matematika yang sedang menjalani Praktik
+                        Pengalaman Lapangan (PPL) di SMP Negeri 1 Bandung. Saya percaya bahwa
+                        pendidikan adalah kunci transformasi sosial, dan saya berkomitmen untuk
+                        menjadi guru yang inspiratif, inovatif, dan berempati.
+                    </p>
+                    <p class="mt-4">
+                        Melalui portofolio ini, saya mendokumentasikan perjalanan belajar saya
+                        dalam mengembangkan kompetensi pedagogis, kepribadian, sosial, dan
+                        profesional. Setiap artefak dan refleksi adalah bukti nyata dari
+                        proses belajar saya.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="skill-tag"><i class="fas fa-brain mr-1"></i> Pedagogik</span>
+                        <span class="skill-tag"><i class="fas fa-people-group mr-1"></i> Sosial</span>
+                        <span class="skill-tag"><i class="fas fa-star mr-1"></i> Profesional</span>
+                        <span class="skill-tag"><i class="fas fa-heart mr-1"></i> Empati</span>
+                        <span class="skill-tag"><i class="fas fa-rocket mr-1"></i> Inovatif</span>
+                    </div>
+                </div>
+                <div class="about-card">
+                    <h3><i class="fas fa-handshake mr-2 text-[#6c5ce7]"></i> Hubungi Saya</h3>
+                    <p class="mb-4">Terbuka untuk berdiskusi, berkolaborasi, dan berbagi pengalaman seputar dunia pendidikan.</p>
+                    <ul>
+                        <li class="flex items-center gap-3 py-2 border-b border-[rgba(108,92,231,0.06)]">
+                            <i class="fas fa-envelope text-[#6c5ce7] w-6"></i>
+                            <span><a href="mailto:muhammad5614dppk.2025@student.uny.ac.id">muhammad5614dppk.2025@student.uny.ac.id</a></span>
+                        </li>
+                        <li class="flex items-center gap-3 py-2 border-b border-[rgba(108,92,231,0.06)]">
+                            <i class="fas fa-phone-alt text-[#6c5ce7] w-6"></i>
+                            <span>+62 815 2258 6307</span>
+                        </li>
+                        <li class="flex items-center gap-3 py-2 border-b border-[rgba(108,92,231,0.06)]">
+                            <i class="fab fa-instagram text-[#6c5ce7] w-6"></i>
+                            <span><a href="https://www.instagram.com/ridhosan1?igsh=aXEzZmlrcnd1Ymd5" target="_blank">@ridhosan1</a></span>
+                        </li>
+                        <li class="flex items-center gap-3 py-2">
+                            <i class="fab fa-linkedin text-[#6c5ce7] w-6"></i>
+                            <span>Muhammad Ridho Sani</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6 flex gap-3">
+                        <a href="https://wa.me/6281522586307" target="_blank" class="flex-1 text-center py-3 rounded-xl bg-[rgba(108,92,231,0.12)] text-[#c5cbe0] hover:bg-[rgba(108,92,231,0.2)] hover:text-white transition-all"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="flex-1 text-center py-3 rounded-xl bg-[rgba(108,92,231,0.12)] text-[#c5cbe0] hover:bg-[rgba(108,92,231,0.2)] hover:text-white transition-all"><i class="fab fa-github"></i></a>
+                        <a href="#" class="flex-1 text-center py-3 rounded-xl bg-[rgba(108,92,231,0.12)] text-[#c5cbe0] hover:bg-[rgba(108,92,231,0.2)] hover:text-white transition-all"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>© 2026 <a href="#" onclick="showSection('home')">Muhammad Ridho Sani</a> — E-Portofolio PPL. Dibuat dengan <i class="fas fa-heart text-[#6c5ce7]"></i> untuk pendidikan.</p>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ===== LOADING SCREEN (MATAHARI TERBIT + TYPING) =====
+        // Teks yang akan diketik
+        const textToType = "Portofolio PPG Prajabatan 2025";
+        let charIndex = 0;
+        const typingElement = document.getElementById('typingText');
+
+        function typeText() {
+            if (charIndex < textToType.length) {
+                typingElement.textContent += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeText, 70); // Kecepatan mengetik
+            }
+        }
+
+        // Mulai mengetik saat halaman dimuat
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            
+            // Mulai animasi mengetik
+            typeText();
+
+            // Tunggu 5 detik sebelum menghilangkan loading screen
+            setTimeout(function() {
+                loadingOverlay.classList.add('hide');
+                setTimeout(function() {
+                    loadingOverlay.style.display = 'none';
+                }, 800);
+            }, 5000);
+        });
+
+        // ===== PARTICLE BACKGROUND =====
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            const particles = [];
+            const count = 80;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.r = Math.random() * 2.5 + 0.5;
+                    this.dx = (Math.random() - 0.5) * 0.5;
+                    this.dy = (Math.random() - 0.5) * 0.5;
+                    this.color = `hsla(${260 + Math.random() * 40}, 70%, 60%, ${Math.random() * 0.3 + 0.1})`;
+                }
+                update() {
+                    this.x += this.dx;
+                    this.y += this.dy;
+                    if (this.x < 0 || this.x > w) this.dx *= -1;
+                    if (this.y < 0 || this.y > h) this.dy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+
+            function drawLines() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(108, 92, 231, ${0.06 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update();
+                    p.draw(); });
+                drawLines();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ===== NAVBAR SCROLL EFFECT =====
+        window.addEventListener('scroll', function() {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+        });
+
+        // ===== DROPDOWN TOGGLE (desktop) =====
+        function toggleDropdown(btn) {
+            const parent = btn.closest('.dropdown-parent');
+            if (!parent) return;
+            const menu = parent.querySelector('.dropdown-menu');
+            if (!menu) return;
+
+            document.querySelectorAll('.dropdown-menu.open').forEach(el => {
+                if (el !== menu) el.classList.remove('open');
+            });
+
+            menu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown-parent')) {
+                document.querySelectorAll('.dropdown-menu.open').forEach(el => el.classList.remove('open'));
+            }
+        });
+
+        // ===== SHOW SECTION =====
+        function showSection(id) {
+            document.querySelectorAll('.dropdown-menu.open').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+
+            const target = document.getElementById(id);
+            if (target) {
+                target.classList.add('active');
+                target.style.animation = 'none';
+                target.offsetHeight;
+                target.style.animation = 'fadeInUp 0.7s ease forwards';
+            }
+
+            document.querySelectorAll('.nav-links > li > button, .nav-links > li > a').forEach(el => {
+                el.classList.toggle('active', el.dataset.section === id);
+            });
+
+            closeMobileMenu();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== SHOW SUB PAGE =====
+        function showSubPage(sectionId, subId) {
+            showSection(sectionId);
+
+            const parentSection = document.getElementById(sectionId);
+            parentSection.querySelectorAll('.sub-page-content').forEach(el => el.classList.remove('active'));
+
+            const target = document.getElementById(sectionId + '-' + subId);
+            if (target) {
+                target.classList.add('active');
+                target.style.animation = 'none';
+                target.offsetHeight;
+                target.style.animation = 'fadeInUp 0.6s ease forwards';
+            }
+
+            const tabsContainer = parentSection.querySelector('.sub-page-tabs');
+            if (tabsContainer) {
+                tabsContainer.querySelectorAll('button').forEach(el => {
+                    el.classList.toggle('active', el.dataset.sub === subId);
+                });
+            }
+
+            document.querySelectorAll('.dropdown-menu.open').forEach(el => el.classList.remove('open'));
+        }
+
+        // ===== MOBILE MENU =====
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobileOverlay');
+            const hamburger = document.getElementById('hamburger');
+            overlay.classList.toggle('open');
+            hamburger.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+        }
+
+        function closeMobileMenu() {
+            const overlay = document.getElementById('mobileOverlay');
+            const hamburger = document.getElementById('hamburger');
+            overlay.classList.remove('open');
+            hamburger.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleMobileDropdown(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('open');
+        }
+
+        // ===== KEYBOARD NAV (Escape) =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMobileMenu();
+                document.querySelectorAll('.dropdown-menu.open').forEach(el => el.classList.remove('open'));
+            }
+        });
+
+        // ===== JEPARA MODAL =====
+        function openModal(title, description, imageSrc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = description;
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('jeparaModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(e) {
+            if (!e || e.target === e.currentTarget || e.target.classList.contains('modal-close')) {
+                document.getElementById('jeparaModal').classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('home');
+        });
+    </script>
+
+</body>
+</html>
